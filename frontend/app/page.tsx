@@ -3,8 +3,12 @@
 import { useState } from 'react';
 import ProductCard from '../components/ProductCard';
 import { Product } from '../types';
+import { useLanguage } from '../context/LanguageContext';
+import LanguageSwitcher from '../components/LanguageSwitcher';
+import FluidBackground from '../components/FluidBackground';
 
 export default function Home() {
+  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
@@ -24,99 +28,79 @@ export default function Home() {
       setProducts(data);
     } catch (err) {
       console.error(err);
-      alert("Search failed or backend not running!");
+      alert(t('noResults'));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-100 font-sans selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen text-white font-sans selection:bg-blue-500 selection:text-white">
+      <FluidBackground />
+
       {/* Navbar */}
       <header className="glass-panel sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">P</div>
-            <h1 className="text-xl font-bold tracking-tight">Price<span className="text-blue-600">Comp</span></h1>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-500 text-white font-bold text-xl">P</div>
+            <h1 className="text-xl font-semibold tracking-tight">Price<span className="text-blue-500">Comp</span></h1>
           </div>
-          <nav className="hidden md:block">
-            <ul className="flex space-x-6 text-sm font-medium text-zinc-600 dark:text-zinc-400">
-              <li><a href="#" className="hover:text-blue-600 dark:hover:text-white transition">Home</a></li>
-              <li><a href="#" className="hover:text-blue-600 dark:hover:text-white transition">Trending</a></li>
-              <li><a href="#" className="hover:text-blue-600 dark:hover:text-white transition">History</a></li>
-              <li><button className="bg-zinc-900 dark:bg-white text-white dark:text-black px-4 py-1.5 rounded-full hover:opacity-90 transition">Login</button></li>
-            </ul>
-          </nav>
+          <div className="flex items-center gap-6">
+            <nav className="hidden md:block">
+              <ul className="flex space-x-8 text-sm font-medium text-gray-300">
+                <li><a href="#" className="hover:text-white transition">Home</a></li>
+                <li><a href="#" className="hover:text-white transition">Trending</a></li>
+                <li><a href="#" className="hover:text-white transition">History</a></li>
+              </ul>
+            </nav>
+            <LanguageSwitcher />
+          </div>
         </div>
       </header>
 
-      <main>
+      <main className="relative z-10">
         {/* Hero Section */}
-        <section className="relative pt-20 pb-32 overflow-hidden">
-          <div className="absolute inset-0 z-0">
-            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/20 blur-[120px] rounded-full mix-blend-screen"></div>
-            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/20 blur-[120px] rounded-full mix-blend-screen"></div>
-          </div>
-
-          <div className="container mx-auto px-4 relative z-10 text-center">
-            <span className="inline-block py-1 px-3 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold tracking-wide mb-6 border border-blue-100 dark:border-blue-800">
-              SMART SHOPPING ASSISTANT
+        <section className="pt-32 pb-20 text-center px-4">
+          <div className="animate-fade-in max-w-4xl mx-auto">
+            <span className="inline-block py-1 px-3 rounded-full bg-blue-500/10 text-blue-400 text-xs font-bold tracking-wide mb-6 border border-blue-500/20 uppercase">
+              {t('title')}
             </span>
-            <h2 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight tight-leading">
-              Compare Prices. <br />
-              <span className="gradient-text">Save Money.</span>
+            <h2 className="text-5xl md:text-8xl font-bold mb-8 tracking-tighter leading-none">
+              {t('subtitle')}
             </h2>
-            <p className="text-lg text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-              Instantly search across Yahoo, PChome, MOMO, Shopee, and Coupang to find the absolute best deals in real-time.
+            <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed">
+              {t('description')}
             </p>
 
-            <form onSubmit={handleSearch} className="max-w-2xl mx-auto relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-              <div className="relative flex bg-white dark:bg-zinc-900 rounded-xl p-2 shadow-2xl items-center border border-zinc-100 dark:border-zinc-800">
-                <svg className="w-6 h-6 text-zinc-400 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <form onSubmit={handleSearch} className="max-w-xl mx-auto relative group">
+              <div className="relative flex items-center">
                 <input
                   type="text"
-                  placeholder="What are you looking for today? (e.g. iPhone 15)"
+                  placeholder={t('searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="flex-1 p-4 bg-transparent focus:outline-none text-lg placeholder:text-zinc-400"
+                  className="w-full apple-input rounded-full py-4 pl-6 pr-32 text-lg backdrop-blur-md"
                 />
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-zinc-900 dark:bg-white text-white dark:text-black px-8 py-3 rounded-lg font-bold hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="absolute right-2 top-2 bottom-2 apple-button rounded-full px-6 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[100px]"
                 >
                   {loading ? (
-                    <span className="flex items-center gap-2">
-                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                      Scraping...
-                    </span>
-                  ) : 'Search'}
+                    <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  ) : t('searchButton')}
                 </button>
-              </div>
-              <div className="flex gap-4 justify-center mt-6 text-sm text-zinc-500">
-                <span>Trusted by 10k+ users</span>
-                <span>•</span>
-                <span>Real-time Data</span>
-                <span>•</span>
-                <span>5 Platforms</span>
               </div>
             </form>
           </div>
         </section>
 
         {/* Results Section */}
-        <section className="container mx-auto px-4 pb-20">
+        <section className="container mx-auto px-4 pb-32">
           {products.length > 0 && (
             <div className="animate-fade-in">
               <div className="flex items-center justify-between mb-8">
-                <h3 className="text-2xl font-bold">Search Results</h3>
-                <div className="flex gap-2">
-                  <select className="bg-transparent border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-1 text-sm">
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                  </select>
-                </div>
+                <h3 className="text-3xl font-bold tracking-tight">Results</h3>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {products.map((p, i) => (
@@ -127,14 +111,14 @@ export default function Home() {
           )}
 
           {products.length === 0 && !loading && (
-            <div className="text-center py-20 border-t border-zinc-100 dark:border-zinc-900">
-              <h4 className="text-lg font-medium text-zinc-400 mb-2">Supported Platforms</h4>
-              <div className="flex justify-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                <span className="font-bold text-xl text-purple-600">Yahoo!</span>
-                <span className="font-bold text-xl text-red-500">PChome</span>
-                <span className="font-bold text-xl text-pink-500">MOMO</span>
-                <span className="font-bold text-xl text-orange-500">Shopee</span>
-                <span className="font-bold text-xl text-red-600">Coupang</span>
+            <div className="text-center py-20">
+              <p className="text-gray-500 mb-6 uppercase tracking-widest text-xs">{t('platform')}</p>
+              <div className="flex justify-center flex-wrap gap-8 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+                <span className="font-bold text-2xl text-purple-400">Yahoo!</span>
+                <span className="font-bold text-2xl text-red-400">PChome</span>
+                <span className="font-bold text-2xl text-pink-400">MOMO</span>
+                <span className="font-bold text-2xl text-orange-400">Shopee</span>
+                <span className="font-bold text-2xl text-red-500">Coupang</span>
               </div>
             </div>
           )}

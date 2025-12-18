@@ -1,71 +1,67 @@
 import React from 'react';
 import { Product } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ProductCardProps {
     product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+    const { t, locale } = useLanguage();
     // Find the cheapest price
     const cheapestPrice = product.links.length > 0
         ? Math.min(...product.links.map(l => l.current_price))
         : 0;
 
+    const currencySymbol = t('currency');
+
     return (
-        <div className="group relative bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+        <div className="bento-card group flex flex-col h-full">
             {/* Image Container */}
-            <div className="h-56 bg-zinc-50 dark:bg-zinc-950 p-6 flex items-center justify-center relative overflow-hidden">
+            <div className="relative aspect-square w-full p-8 bg-white/5 flex items-center justify-center">
                 {product.image_url ? (
-                    <img src={product.image_url} alt={product.name} className="object-contain h-full w-full group-hover:scale-110 transition-transform duration-500" />
+                    <img src={product.image_url} alt={product.name} className="object-contain w-full h-full drop-shadow-xl group-hover:scale-105 transition-transform duration-500 ease-out" />
                 ) : (
-                    <div className="text-zinc-300 dark:text-zinc-700 font-bold text-4xl select-none">IMG</div>
+                    <div className="text-gray-600 font-bold text-4xl select-none">IMG</div>
                 )}
-                <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                    Best Deal
+                {/* Platform Badges */}
+                <div className="absolute bottom-3 right-3 flex -space-x-2">
+                    {product.links.map((link, i) => (
+                        <div key={link.platform_name} className="w-8 h-8 rounded-full bg-[#1d1d1f] border border-gray-700 flex items-center justify-center text-xs font-bold text-white shadow-lg z-10" title={link.platform_name}>
+                            {link.platform_name[0]}
+                        </div>
+                    )).slice(0, 3)}
+                    {product.links.length > 3 && (
+                        <div className="w-8 h-8 rounded-full bg-[#1d1d1f] border border-gray-700 flex items-center justify-center text-xs font-bold text-gray-400 shadow-lg z-0">
+                            +{product.links.length - 3}
+                        </div>
+                    )}
                 </div>
             </div>
 
             {/* Content */}
-            <div className="p-5">
-                <div className="text-xs text-blue-500 mb-2 font-medium tracking-wider uppercase">
-                    {product.category || 'Electronics'}
+            <div className="p-6 flex flex-col flex-1">
+                <div className="text-[10px] text-blue-400 mb-2 font-bold tracking-widest uppercase">
+                    {product.category || 'Product'}
                 </div>
-                <h3 className="font-bold text-lg mb-3 line-clamp-2 leading-tight text-zinc-900 dark:text-zinc-100 h-12">
+                <h3 className="font-semibold text-lg mb-2 line-clamp-2 leading-snug text-gray-100 flex-1">
                     {product.name}
                 </h3>
 
-                <div className="flex items-end justify-between mb-4">
-                    <div>
-                        <span className="text-xs text-zinc-500 dark:text-zinc-400 block">Lowest Price</span>
-                        <div className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-pink-600">
-                            ${cheapestPrice.toLocaleString()}
+                <div className="pt-4 border-t border-white/10 mt-auto">
+                    <div className="flex items-end justify-between">
+                        <div>
+                            <p className="text-xs text-gray-500 mb-0.5">{t('lowestPrice')}</p>
+                            <p className="text-2xl font-bold text-white tracking-tight">
+                                <span className="text-sm font-normal text-gray-400 align-top mr-0.5">{currencySymbol}</span>
+                                {cheapestPrice.toLocaleString()}
+                            </p>
                         </div>
-                    </div>
-                    <div className="text-right">
-                        <span className="text-xs text-zinc-500 dark:text-zinc-400 mb-1 block">Found on</span>
-                        <div className="flex -space-x-2 justify-end">
-                            {product.links.map((link, i) => (
-                                <div key={link.platform_name} className="w-6 h-6 rounded-full bg-zinc-200 dark:bg-zinc-700 border border-white dark:border-zinc-900 flex items-center justify-center text-[10px] font-bold z-0 relative" title={`${link.platform_name}: $${link.current_price}`}>
-                                    {link.platform_name[0]}
-                                </div>
-                            )).slice(0, 4)}
-                        </div>
+                        <button className="apple-button rounded-full px-5 py-2 text-xs font-semibold">
+                            {t('viewProduct')}
+                        </button>
                     </div>
                 </div>
-
-                {/* Detailed Price List Hover Reveal (Optional, keeping simple for now) */}
-                <div className="space-y-1 pt-3 border-t border-zinc-100 dark:border-zinc-800">
-                    {product.links.map(link => (
-                        <div key={link.platform_name} className="flex justify-between text-xs text-zinc-600 dark:text-zinc-400">
-                            <span>{link.platform_name}</span>
-                            <span className="font-mono">${link.current_price.toLocaleString()}</span>
-                        </div>
-                    ))}
-                </div>
-
-                <button className="w-full mt-4 bg-zinc-900 dark:bg-white text-white dark:text-black py-2.5 rounded-lg font-semibold hover:opacity-90 transition active:scale-95 text-sm">
-                    View Details
-                </button>
             </div>
         </div>
     );
