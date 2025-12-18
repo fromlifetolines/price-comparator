@@ -1,0 +1,24 @@
+{
+    "name": "Price Comparator Stack",
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {},
+        "ghcr.io/devcontainers/features/python:1": {},
+        "ghcr.io/devcontainers-contrib/features/puppeteer:1": {}
+    },
+    "forwardPorts": [
+        3000,
+        8000
+    ],
+    "postCreateCommand": "cd backend && pip install -r requirements.txt && cd ../frontend && npm install && cd ../scraper && npm install",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "ms-python.python",
+                "ms-azuretools.vscode-docker"
+            ]
+        }
+    }
+}
