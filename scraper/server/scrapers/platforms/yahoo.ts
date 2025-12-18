@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 
 export async function YahooScraper(keyword: string) {
-    console.log(`[Yahoo] Starting scrape for ${keyword}`);
+    console.error(`[Yahoo] Starting scrape for ${keyword}`);
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 

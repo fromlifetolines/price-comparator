@@ -5,10 +5,10 @@ import { ShopeeScraper } from './platforms/shopee';
 import { CoupangScraper } from './platforms/coupang';
 
 async function main() {
-    console.log("Starting Price Comparator Scrapers...");
+    console.error("Starting Price Comparator Scrapers...");
 
     const searchTerm = process.argv[2] || "iPhone 15"; // Default search term
-    console.log(`Scraping for: ${searchTerm}`);
+    console.error(`Scraping for: ${searchTerm}`);
 
     // Clean up browser instances if they hang
     // In a real app, use a queue system (Bull/Redis)

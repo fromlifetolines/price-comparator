@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 
 export async function PChomeScraper(keyword: string) {
-    console.log(`[PChome] Starting scrape for ${keyword}`);
+    console.error(`[PChome] Starting scrape for ${keyword}`);
     // PChome 24h is tough with puppeteer due to heavy JS/anti-bot. 
     // This is a placeholder structure.
     const browser = await puppeteer.launch({ headless: true });
