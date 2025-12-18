@@ -1,0 +1,24 @@
+{
+    "name": "price-comparator-scraper",
+    "version": "1.0.0",
+    "description": "Scraper service for Price Comparator Platform",
+    "main": "dist/server/scrapers/init.js",
+    "scripts": {
+        "start": "ts-node server/scrapers/init.ts",
+        "build": "tsc"
+    },
+    "dependencies": {
+        "puppeteer": "^23.0.0",
+        "pg": "^8.11.0",
+        "dotenv": "^16.0.0",
+        "node-cron": "^3.0.0"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0",
+        "ts-node": "^10.9.0",
+        "@types/node": "^20.0.0",
+        "@types/pg": "^8.10.0",
+        "@types/puppeteer": "^7.0.4",
+        "@types/node-cron": "^3.0.0"
+    }
+}
