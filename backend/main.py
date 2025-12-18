@@ -2,7 +2,9 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from . import models, database
+from models import Base, Product, ProductLink, PriceHistory, Favorite, PriceAlert
+import models
+import database
 
 models.Base.metadata.create_all(bind=database.engine)
 

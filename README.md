@@ -1,33 +1,36 @@
 # Price Comparator Platform
 
-## Components
+A powerful price comparison website for Yahoo, PChome, MOMO, Shopee, and Coupang.
 
-### 1. Frontend (Next.js)
+## 🚀 Quick Start (Local)
 
-Located in `frontend/`.
+1. **Start Backend** (Terminal 1)
 
-- **Run**: `cd frontend && npm run dev`
-- **Port**: 3000
+    ```bash
+    cd backend
+    pip install -r requirements.txt
+    uvicorn main:app --reload --port 8000
+    ```
 
-### 2. Backend (FastAPI)
+2. **Start Frontend** (Terminal 2)
 
-Located in `backend/`.
+    ```bash
+    cd frontend
+    npm install
+    npm run dev
+    ```
 
-- **Setup**: `cd backend && pip install -r requirements.txt`
-- **Run**: `cd backend && uvicorn main:app --reload`
-- **Port**: 8000
-- **Docs**: <http://localhost:8000/docs>
+3. **Open Website**: [http://localhost:3000](http://localhost:3000)
 
-### 3. Scraper (Node.js)
+## ☁️ Run on GitHub (Codespaces)
 
-Located in `scraper/`.
+1. Click the green **Code** button above.
+2. Select **Codespaces** tab.
+3. Click **Create codespace on main**.
+4. Wait for it to load, then click "Open in Browser" when prompted.
 
-- **Setup**: `cd scraper && npm install`
-- **Run**: `cd scraper && npm start`
-- **Run specific**: `cd scraper && npm start "keyword"`
+## Project Structure
 
-## Prerequisites
-
-- Node.js
-- Python 3.8+
-- PostgreSQL (Ensure it's running and connection string is set in backend)
+- `frontend/`: The User Interface (Next.js). **This is what you see.**
+- `backend/`: The Logic (FastAPI). Runs silently in the background.
+- `scraper/`: The Robots (Puppeteer). Fetches prices.
