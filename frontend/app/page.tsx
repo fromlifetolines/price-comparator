@@ -21,8 +21,9 @@ export default function Home() {
     setProducts([]);
 
     try {
-      // Use 127.0.0.1 to avoid localhost ipv6 resolution issues
-      const res = await fetch(`http://127.0.0.1:8000/search?q=${encodeURIComponent(searchTerm)}`);
+      // Dynamic API URL: Empty string for relative path (Cloud), localhost for local dev
+      const apiBase = process.env.NODE_ENV === 'production' ? '' : 'http://127.0.0.1:8000';
+      const res = await fetch(`${apiBase}/search?q=${encodeURIComponent(searchTerm)}`);
 
       if (!res.ok) {
         const errText = await res.text();
