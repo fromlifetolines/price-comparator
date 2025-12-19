@@ -1,5 +1,7 @@
 # Price Comparator Platform
 
+### 🔴 [Click here to open Live Demo (線上試用)](https://price-comparator-ll3q.onrender.com)
+
 A powerful price comparison website for Yahoo, PChome, MOMO, Shopee, and Coupang.
 
 ## 🚀 Quick Start (Local)
@@ -20,7 +22,9 @@ A powerful price comparison website for Yahoo, PChome, MOMO, Shopee, and Coupang
     npm run dev
     ```
 
-3. **Open Website**: [http://localhost:3000](http://localhost:3000)
+3. **Open Website**:
+    - **Local**: [http://localhost:3000](http://localhost:3000)
+    - **Cloud (Live)**: [https://price-comparator-ll3q.onrender.com](https://price-comparator-ll3q.onrender.com)
 
 ## ☁️ Run on GitHub (Codespaces)
 
