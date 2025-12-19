@@ -126,6 +126,23 @@ def search_products(q: str, db: Session = Depends(database.get_db)):
         if not scraped_data:
              print("Scraped data is empty. RAW STDOUT was:")
              print(result.stdout)
+             # Fallback to Mock Data to prove system is working
+             scraped_data = [
+                 {
+                     "title": f"系統訊息：雲端爬蟲被阻擋，顯示測試資料 - 搜尋關鍵字：{q}",
+                     "price": 0,
+                     "link": "https://github.com/fromlifetolines/price-comparator",
+                     "image": "",
+                     "platform": "System"
+                 },
+                 {
+                     "title": "[測試商品] iPad Pro 12.9吋 (示範資料)",
+                     "price": 35000,
+                     "link": "#",
+                     "image": "",
+                     "platform": "Demo"
+                 }
+             ]
 
 
         print(f"Scraped {len(scraped_data)} items total")

@@ -60,3 +60,19 @@ INFO:     Finished server process [7283]
 INFO:     Started server process [7373]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [7373]
+INFO:     Started server process [9543]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9543]
+INFO:     Started server process [10679]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
