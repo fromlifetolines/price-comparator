@@ -32,6 +32,16 @@ app.add_middleware(
 def read_status():
     return {"status": "ok"}
 
+@app.get("/debug/logs")
+def read_debug_logs():
+    log_path = "backend_debug.log"
+    if os.path.exists(log_path):
+        with open(log_path, "r") as f:
+            # Return last 2000 chars
+            content = f.read()
+            return {"logs": content[-2000:]}
+    return {"logs": "Log file not found"}
+
 # ... (Search logic remains below, but we need to move the mount to the end or ensure API routes are explicitly defined)
 
 # We will add the static mount AFTER all API routes are defined, 
