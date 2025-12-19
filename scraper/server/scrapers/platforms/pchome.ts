@@ -1,31 +1,51 @@
 import puppeteer from 'puppeteer';
 
 export async function PChomeScraper(keyword: string) {
-    console.error(`[PChome] Starting scrape for ${keyword}`);
-    // PChome 24h is tough with puppeteer due to heavy JS/anti-bot. 
-    // This is a placeholder structure.
-    const browser = await puppeteer.launch({ headless: true });
+    console.log(`[PChome] Starting scrape for ${keyword}`);
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
     const page = await browser.newPage();
 
     try {
-        await page.goto(`https://ecshweb.pchome.com.tw/search/v3.3/?q=${encodeURIComponent(keyword)}`, { waitUntil: 'networkidle2' });
+        const url = `https://ecshweb.pchome.com.tw/search/v3.3/?q=${encodeURIComponent(keyword)}`;
+        console.log(`[PChome] Navigating to ${url}`);
 
-        // PChome loads data via API often, might need page.waitForResponse
-        const items = await page.evaluate(() => {
-            const results: any[] = [];
-            const els = document.querySelectorAll('.col3f'); // Example class
-            els.forEach((el) => {
-                const title = el.querySelector('.prod_name')?.textContent;
-                const price = el.querySelector('.price_value')?.textContent;
-                if (title && price) {
-                    results.push({ title, price, platform: 'PChome' });
-                }
-            });
-            return results;
-        });
+        // Reference: https://github.com/ALiangLiang/pchome-api
+        // We will directly fetch the API using Node's fetch (or axios if installed, but let's try browser page usage with correct headers or just simple page.goto(api))
+        // Better yet, since we are in Node.js environment here (Puppeteer controlling it), we can't easily "fetch" from the Node side without installing axios. 
+        // But we CAN navigate the page to the API JSON directly!
 
-        await browser.close();
-        return items;
+        console.log("[PChome] Navigating directly to API...");
+        const apiUrl = `https://ecshweb.pchome.com.tw/search/v3.3/all/results?q=${encodeURIComponent(keyword)}&page=1&sort=rnk/dc`;
+
+        await page.goto(apiUrl, { waitUntil: 'networkidle2' });
+
+        // The page content should now be the raw JSON
+        const jsonText = await page.evaluate(() => document.body.innerText);
+
+        try {
+            const json = JSON.parse(jsonText);
+            const prods = json.prods || [];
+
+            const items = prods.map((item: any) => ({
+                title: item.name,
+                price: item.price,
+                link: `https://24h.pchome.com.tw/prod/${item.Id}`,
+                image: `https://cs-a.ecimg.tw${item.picS}`,
+                platform: 'PChome'
+            }));
+
+            console.log(`[PChome] Found ${items.length} items via API Navigation`);
+            await browser.close();
+            return items;
+        } catch (e) {
+            console.log("[PChome] JSON Parse Error (Might be blocked or not JSON)", e);
+            await browser.close();
+            return [];
+        }
+
     } catch (e) {
         console.error("[PChome] Error", e);
         await browser.close();

@@ -1,0 +1,62 @@
+INFO:     Will watch for changes in these directories: ['/Users/howard/Desktop/price-comparator/backend']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [7128] using StatReload
+INFO:     Started server process [7132]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Running scraper for: iPad pro
+Error running scraper: name 'os' is not defined
+INFO:     127.0.0.1:57751 - "GET /search?q=iPad%20pro HTTP/1.1" 200 OK
+Running scraper for: iPad pro
+Error running scraper: name 'os' is not defined
+INFO:     127.0.0.1:57751 - "GET /search?q=iPad%20pro HTTP/1.1" 200 OK
+Running scraper for: iPad pro
+Error running scraper: name 'os' is not defined
+INFO:     127.0.0.1:57751 - "GET /search?q=iPad%20pro HTTP/1.1" 200 OK
+Running scraper for: iPad pro
+Error running scraper: name 'os' is not defined
+INFO:     127.0.0.1:57751 - "GET /search?q=iPad%20pro HTTP/1.1" 200 OK
+Running scraper for: iphone
+Error running scraper: name 'os' is not defined
+INFO:     127.0.0.1:57751 - "GET /search?q=iphone HTTP/1.1" 200 OK
+Running scraper for: iPhone
+Error running scraper: name 'os' is not defined
+INFO:     127.0.0.1:57751 - "GET /search?q=iPhone HTTP/1.1" 200 OK
+Running scraper for: iPhone
+Error running scraper: name 'os' is not defined
+INFO:     127.0.0.1:57751 - "GET /search?q=iPhone HTTP/1.1" 200 OK
+Running scraper for: iPhone
+Error running scraper: name 'os' is not defined
+INFO:     127.0.0.1:57751 - "GET /search?q=iPhone HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [7132]
+INFO:     Started server process [7233]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [7233]
+INFO:     Started server process [7274]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [7274]
+INFO:     Started server process [7283]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [7283]
+INFO:     Started server process [7373]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.

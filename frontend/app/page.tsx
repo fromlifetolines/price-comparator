@@ -21,21 +21,27 @@ export default function Home() {
     setProducts([]);
 
     try {
-      const res = await fetch(`http://localhost:8000/search?q=${encodeURIComponent(searchTerm)}`);
-      if (!res.ok) throw new Error("Search failed");
+      // Use 127.0.0.1 to avoid localhost ipv6 resolution issues
+      const res = await fetch(`http://127.0.0.1:8000/search?q=${encodeURIComponent(searchTerm)}`);
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Server Error: ${res.status} ${errText}`);
+      }
 
       const data = await res.json();
       setProducts(data);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert(t('noResults'));
+      // Show actual error to help debugging "No Reaction"
+      alert(`${t('noResults')} (Error: ${err.message})`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen text-white font-sans selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen text-white font-sans selection:bg-blue-500 selection:text-white pb-20">
       <FluidBackground />
 
       {/* Navbar */}
@@ -73,18 +79,25 @@ export default function Home() {
             </p>
 
             <form onSubmit={handleSearch} className="max-w-xl mx-auto relative group">
-              <div className="relative flex items-center">
+              <div className="relative flex items-center liquid-glass rounded-full p-1 transition-all duration-300">
                 <input
                   type="text"
+                  name="search"
+                  id="search-input"
                   placeholder={t('searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full apple-input rounded-full py-4 pl-6 pr-32 text-lg backdrop-blur-md"
+                  className="w-full bg-transparent border-none text-white placeholder-gray-400 rounded-full py-4 pl-6 pr-36 text-lg focus:outline-none focus:ring-0"
                 />
                 <button
                   type="submit"
                   disabled={loading}
-                  className="absolute right-2 top-2 bottom-2 apple-button rounded-full px-6 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[100px]"
+                  onClick={(e) => {
+                    // Ensure click works even if submit is blocked
+                    if (!loading) handleSearch(e);
+                  }}
+                  className="absolute right-2 top-2 bottom-2 z-50 metallic-button rounded-full px-6 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[100px] cursor-pointer"
+                  style={{ pointerEvents: 'auto' }}
                 >
                   {loading ? (
                     <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>

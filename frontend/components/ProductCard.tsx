@@ -57,7 +57,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                                 {cheapestPrice.toLocaleString()}
                             </p>
                         </div>
-                        <button className="apple-button rounded-full px-5 py-2 text-xs font-semibold">
+                        <button className="liquid-button rounded-full px-6 py-2 text-xs font-bold tracking-wider uppercase hover:shadow-[0_0_20px_rgba(41,151,255,0.6)] border-white/20">
                             {t('viewProduct')}
                         </button>
                     </div>
