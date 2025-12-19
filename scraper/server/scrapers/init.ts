@@ -10,11 +10,11 @@ async function scrapeAll(term: string): Promise<any[]> {
     console.error(`[Scraper] Executing for: "${term}"`);
 
     const results = await Promise.allSettled([
-        // YahooScraper(term),   // Disabled to save memory (Require Chrome)
-        PChomeScraper(term),  // API Mode (Lightweight)
-        // MomoScraper(term),    // Disabled to save memory
-        // ShopeeScraper(term),  // Disabled to save memory
-        // CoupangScraper(term)  // Disabled to save memory
+        YahooScraper(term),
+        PChomeScraper(term),
+        MomoScraper(term),
+        ShopeeScraper(term),
+        CoupangScraper(term)
     ]);
 
     const products: any[] = [];
