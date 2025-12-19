@@ -1,7 +1,8 @@
 # Base image with Python
 FROM python:3.10-slim
 
-# Install Node.js 18 and Chrome dependencies for Puppeteer
+# Install Node.js 20 (required for Next.js 16) and Chrome dependencies
+# We also download and install Google Chrome Stable explicitly
 RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
@@ -9,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
-    && apt-get install -y \
+    && apt-get install -y --no-install-recommends \
     ca-certificates \
     fonts-liberation \
     libasound2 \
@@ -45,6 +46,10 @@ RUN apt-get update && apt-get install -y \
     libxtst6 \
     lsb-release \
     xdg-utils \
+    # Install Google Chrome Stable
+    && wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+    && apt-get install -y ./google-chrome-stable_current_amd64.deb \
+    && rm google-chrome-stable_current_amd64.deb \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -53,19 +58,16 @@ WORKDIR /app
 COPY frontend/package.json frontend/package-lock.json ./frontend/
 RUN cd frontend && npm install
 COPY frontend ./frontend
+# ENV NEXT_TELEMETRY_DISABLED 1 
 RUN cd frontend && npm run build
 
 # 2. Setup Scraper
 COPY scraper/package.json scraper/package-lock.json ./scraper/
 RUN cd scraper && npm install
 COPY scraper ./scraper/
-# Create Puppeteer cache directory to avoid permission issues
+# Point Puppeteer to the installed Chrome
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
-# Install Chrome manually or trust Puppeteer's automated install if we didn't skip. 
-# Better: Let Puppeteer install chrome locally but ensure dependencies are met.
-# Resetting skip for simple setup, relying on 'npx puppeteer browsers install chrome' if needed.
-# For simplicity in this env, we rely on apt-get installing dependencies and Puppeteer installing Chromium.
 
 # 3. Setup Backend
 COPY backend/requirements.txt ./backend/
