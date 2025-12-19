@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     wget \
     unzip \
-    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && apt-get install -y \
     ca-certificates \
