@@ -10,9 +10,14 @@ export async function ShopeeScraper(keyword: string) {
 
         const { data } = await axios.get(url, {
             headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Referer': 'https://shopee.tw/search?keyword=' + encodeURIComponent(keyword),
-                'X-Requested-With': 'XMLHttpRequest'
+                // Simulate Shopee App or Mobile Web
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
+                'Referer': 'https://shopee.tw/',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+                'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+                'X-Shopee-Language': 'zh-Hant', // Specific to Shopee
+                'X-Api-Source': 'pc' // Sometimes 'rn' (react native) works better, but PC API endpoint needs PC source usually. Let's try 'rweb' (mobile web)
             }
         });
 
