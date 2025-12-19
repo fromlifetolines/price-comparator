@@ -50,10 +50,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
                 {/* Platform Badges (Top Right) */}
                 <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
-                    {product.links.map((link) => (
-                        <span key={link.platform_name}
-                            className={`text-[10px] px-2 py-0.5 rounded-full text-white font-bold shadow-sm ${PLATFORM_COLORS[link.platform_name] || 'bg-gray-500'} opacity-90`}>
-                            {link.platform_name}
+                    {Array.from(new Set(product.links.map(l => l.platform_name))).map((platformName) => (
+                        <span key={platformName}
+                            className={`text-[10px] px-2 py-0.5 rounded-full text-white font-bold shadow-sm ${PLATFORM_COLORS[platformName] || 'bg-gray-500'} opacity-90`}>
+                            {platformName}
                         </span>
                     ))}
                 </div>
