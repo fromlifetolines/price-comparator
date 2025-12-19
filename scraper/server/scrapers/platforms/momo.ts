@@ -4,7 +4,12 @@ export async function MomoScraper(keyword: string) {
     console.log(`[MOMO] Starting scrape for ${keyword}`);
     const browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'] // Helper for Docker/Codespaces
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu'
+        ]
     });
     const page = await browser.newPage();
 
