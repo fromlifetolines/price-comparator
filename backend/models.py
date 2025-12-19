@@ -20,7 +20,7 @@ class Product(Base):
     category = Column(String, index=True, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     
-    links = relationship("ProductLink", back_populates="product")
+    links = relationship("ProductLink", back_populates="product", lazy="joined")
     favorites = relationship("Favorite", back_populates="product")
     alerts = relationship("PriceAlert", back_populates="product")
 

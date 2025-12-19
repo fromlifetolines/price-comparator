@@ -162,21 +162,29 @@ def search_products(q: str, db: Session = Depends(database.get_db)):
             if not p:
                 p = models.Product(
                     name=item['title'],
-                    image_url="", # Scraper didn't capture image yet in all cases
+                    image_url=item.get('image', ''),
                     description=""
                 )
                 db.add(p)
                 db.commit()
                 db.refresh(p)
+            else:
+                # Update image if missing
+                if not p.image_url and item.get('image'):
+                    p.image_url = item.get('image')
+                    db.commit()
             
             # Add Link/Price
             # Check link
-            link = db.query(models.ProductLink).filter(models.ProductLink.url == item.get('link', '')).first()
-            if not link and item.get('link'):
+            link_url = item.get('link', '')
+            link = db.query(models.ProductLink).filter(models.ProductLink.url == link_url).first()
+            
+            if not link and link_url:
                 price_val = 0.0
                 try:
                     # Clean price string "$1,299" -> 1299
                     price_str = str(item['price']).replace('$', '').replace(',', '')
+                    # Handle "35000.0" -> 35000.0
                     price_val = float(price_str)
                 except:
                     pass
@@ -184,7 +192,7 @@ def search_products(q: str, db: Session = Depends(database.get_db)):
                 link = models.ProductLink(
                     product_id=p.id,
                     platform_name=item.get('platform', 'Unknown'),
-                    url=item.get('link'),
+                    url=link_url,
                     current_price=price_val
                 )
                 db.add(link)
@@ -193,7 +201,8 @@ def search_products(q: str, db: Session = Depends(database.get_db)):
             products_to_return.append(p)
         
         # Re-query properly to get relations
-        return db.query(models.Product).filter(models.Product.name.contains(q)).all()
+        final_products = db.query(models.Product).filter(models.Product.name.contains(q)).all()
+        return final_products
 
     except Exception as e:
         print(f"Error running scraper: {e}")
