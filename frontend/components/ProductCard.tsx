@@ -15,6 +15,15 @@ const PLATFORM_COLORS: Record<string, string> = {
     'Unknown': 'bg-gray-500'
 };
 
+const PLATFORM_DISPLAY_NAMES: Record<string, string> = {
+    'Yahoo': 'Yahoo購物',
+    'PChome': 'PChome',
+    'MOMO': 'MOMO購物',
+    'Shopee': '蝦皮',
+    'Coupang': '酷澎',
+    'Unknown': '其他平台'
+};
+
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const { t, locale } = useLanguage();
 
@@ -25,6 +34,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
     const cheapestPrice = cheapestLink ? cheapestLink.current_price : 0;
     const currencySymbol = t('currency');
+
+    // Determine display label
+    const platformLabel = cheapestLink ? (PLATFORM_DISPLAY_NAMES[cheapestLink.platform_name] || cheapestLink.platform_name) : '相關商品';
 
     return (
         <div className="bento-card group flex flex-col h-full hover:ring-2 hover:ring-blue-500/50 transition-all">
@@ -50,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {/* Content */}
             <div className="p-5 flex flex-col flex-1 bg-[#1c1c1e]">
                 <div className="text-[10px] text-blue-400 mb-1 font-bold tracking-widest uppercase truncate">
-                    {product.category || 'Product'}
+                    {platformLabel}
                 </div>
                 <h3 className="font-medium text-base mb-3 line-clamp-2 leading-snug text-gray-100 flex-1" title={product.name}>
                     {product.name}
